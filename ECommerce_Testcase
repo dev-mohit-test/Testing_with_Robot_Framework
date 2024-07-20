@@ -1,0 +1,47 @@
+*** Settings ***
+Library     SeleniumLibrary
+
+*** Variables ***
+${url}      https://www.saucedemo.com/v1/
+${browser}      chrome
+${name}     Mohit
+${last}     Dev
+${code}       110093
+
+*** Test Cases ***
+TestCase1
+    loginpage
+    fillDetails
+
+*** Keywords ***
+loginpage
+    #create web driver   chrome  executable_path="C:\Users\RAHUL DEV\AppData\Local\Programs\Python\Python312\Scripts\chromedriver.exe"
+    Open Browser    ${url}     ${browser}
+    Sleep       2
+    Maximize Browser Window
+    Execute Javascript      window.scrollTo(0,400)
+    Input Text      id:user-name       standard_user
+    Input Text      xpath://input[@id='password']       secret_sauce
+    Sleep       2
+    Click Button    id:login-button
+    Sleep       2
+    ${Title}=   get title
+    log to console    ${Title}
+
+
+fillDetails
+    Sleep       2
+    Click Button     xpath:(//button[text()='ADD TO CART'])[1]
+    Sleep       2
+    click element    xpath://div[@id='shopping_cart_container']
+    click element    xpath://a[text()='CHECKOUT']
+    Input Text      id:first-name       ${name}
+    Input Text      id:last-name        ${last}
+    Input Text      id:postal-code      ${code}
+    click element    xpath://input[@value='CONTINUE']
+    ${price}    get text        xpath://div[@class='summary_total_label']
+    log to console  ${price}
+    click element    xpath://a[text()='FINISH']
+    click button     xpath://button[text()='Open Menu']
+    click element    xpath://a[text()='Logout']
+    Close Browser
